@@ -185,7 +185,7 @@ const UserHome = () => {
               View My Sessions
             </Button>
             <Button variant="outline" size="sm">
-              Report Issue
+              Feedback
             </Button>
             <Button variant="outline" size="sm">
               Facility Guide
