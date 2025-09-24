@@ -26,7 +26,7 @@ const UserHome = () => {
     },
     {
       id: 3,
-      name: "Study Hall",
+      name: "LRC",
       status: "Open",
       occupancy: { current: 12, max: 30 },
       location: "Block C, Second Floor"
