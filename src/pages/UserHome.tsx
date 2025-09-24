@@ -112,10 +112,12 @@ const UserHome = () => {
                     </span>
                     <span className="text-muted-foreground">people</span>
                   </div>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Clock className="h-3 w-3" />
-                    2h max
-                  </div>
+                  {!["Recreation Center A", "Gym & Fitness"].includes(facility.name) && (
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <Clock className="h-3 w-3" />
+                      2h max
+                    </div>
+                  )}
                 </div>
                 
                 {/* Sports Selection for Recreation Center */}
