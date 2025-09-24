@@ -38,15 +38,9 @@ const AdminHome = () => {
         </div>
         
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">Admin Dashboard</h1>
-            <p className="text-muted-foreground">Manage facilities and monitor usage</p>
-          </div>
-          <Button className="mt-4 sm:mt-0">
-            <QrCode className="mr-2 h-4 w-4" />
-            Generate QR Code
-          </Button>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-foreground mb-2">Admin Dashboard</h1>
+          <p className="text-muted-foreground">Manage facilities and monitor usage</p>
         </div>
 
         {/* Stats Grid */}
