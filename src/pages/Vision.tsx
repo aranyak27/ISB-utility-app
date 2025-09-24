@@ -141,15 +141,6 @@ const Vision = () => {
               Continue to App
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-border hover:bg-secondary"
-            >
-              <BookOpen className="mr-2 h-4 w-4" />
-              View Documentation
-            </Button>
           </div>
         </div>
       </div>
