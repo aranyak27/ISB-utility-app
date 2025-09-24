@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,6 +11,8 @@ import { ArrowRight, BookOpen, Target, ArrowLeft } from "lucide-react";
 
 const Vision = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const persona = location.state?.persona || 'user';
   const [selectedFeature, setSelectedFeature] = useState<FeatureSection | null>(null);
   const [selectedPhase, setSelectedPhase] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,9 +31,9 @@ const Vision = () => {
       localStorage.setItem('hideVisionUntil', today);
     }
     
-    // In a real app, this would check the user's role from auth context
-    // For demo purposes, we'll navigate to a default route
-    navigate('/user/home');
+    // Navigate to the appropriate home page based on persona
+    const homePath = persona === 'admin' ? '/admin/home' : '/user/home';
+    navigate(homePath);
   };
 
   const currentPhase = visionData.find(p => p.id === selectedPhase);
