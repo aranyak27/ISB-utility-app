@@ -1,17 +1,34 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { QrCode, Users, Clock, MapPin, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const UserHome = () => {
   const navigate = useNavigate();
+  const [selectedSports, setSelectedSports] = useState<{ [key: number]: string }>({});
+
+  const sports = [
+    { value: "badminton", label: "Badminton" },
+    { value: "squash", label: "Squash" },
+    { value: "swimming", label: "Swimming" },
+    { value: "chess", label: "Chess" }
+  ];
 
   // Handle QR scanning
-  const handleScanToEnter = (facilityName: string) => {
+  const handleScanToEnter = (facilityId: number, facilityName: string) => {
+    // Check if it's Recreation Center and sport is selected
+    if (facilityName === "Recreation Center A" && !selectedSports[facilityId]) {
+      alert("Please select a sport before scanning to enter Recreation Center.");
+      return;
+    }
+    
     // In a real app, this would trigger camera/QR scanner
     // For demo, we'll simulate the scanning process
-    alert(`QR Scanner opened for ${facilityName}. In a real app, this would open the camera to scan QR codes.`);
+    const sportInfo = selectedSports[facilityId] ? ` for ${sports.find(s => s.value === selectedSports[facilityId])?.label}` : '';
+    alert(`QR Scanner opened for ${facilityName}${sportInfo}. In a real app, this would open the camera to scan QR codes.`);
   };
   
   // Mock facility data
@@ -101,11 +118,39 @@ const UserHome = () => {
                   </div>
                 </div>
                 
+                {/* Sports Selection for Recreation Center */}
+                {facility.name === "Recreation Center A" && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">
+                      Select Sport <span className="text-destructive">*</span>
+                    </label>
+                    <Select 
+                      value={selectedSports[facility.id] || ""} 
+                      onValueChange={(value) => setSelectedSports(prev => ({ ...prev, [facility.id]: value }))}
+                    >
+                      <SelectTrigger className="w-full bg-background border-border">
+                        <SelectValue placeholder="Choose a sport" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-border shadow-lg z-50">
+                        {sports.map((sport) => (
+                          <SelectItem 
+                            key={sport.value} 
+                            value={sport.value}
+                            className="hover:bg-accent hover:text-accent-foreground cursor-pointer"
+                          >
+                            {sport.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+                
                 <Button 
                   className="w-full" 
                   disabled={facility.status === 'Closed'}
                   variant="default"
-                  onClick={() => handleScanToEnter(facility.name)}
+                  onClick={() => handleScanToEnter(facility.id, facility.name)}
                 >
                   <QrCode className="mr-2 h-4 w-4" />
                   Scan to Enter
