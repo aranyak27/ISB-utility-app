@@ -97,7 +97,7 @@ const UserHome = () => {
                 <Button 
                   className="w-full" 
                   disabled={facility.status === 'Closed'}
-                  variant={facility.status === 'Open' ? 'default' : 'secondary'}
+                  variant="default"
                 >
                   <QrCode className="mr-2 h-4 w-4" />
                   Scan to Enter
