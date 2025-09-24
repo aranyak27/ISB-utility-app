@@ -201,13 +201,25 @@ const UserHome = () => {
             <CardTitle className="text-foreground">Quick Actions</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-wrap gap-3">
-            <Button variant="outline" size="sm">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => navigate("/user/sessions")}
+            >
               View My Sessions
             </Button>
-            <Button variant="outline" size="sm">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => navigate("/user/feedback")}
+            >
               Feedback
             </Button>
-            <Button variant="outline" size="sm">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => navigate("/user/guide")}
+            >
               Facility Guide
             </Button>
           </CardContent>

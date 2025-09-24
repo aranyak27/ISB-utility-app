@@ -11,6 +11,9 @@ import ResetPassword from "./pages/ResetPassword";
 import Vision from "./pages/Vision";
 import UserHome from "./pages/UserHome";
 import AdminHome from "./pages/AdminHome";
+import ViewMySessions from "./pages/ViewMySessions";
+import Feedback from "./pages/Feedback";
+import FacilityGuide from "./pages/FacilityGuide";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +33,9 @@ const App = () => (
           <Route path="/vision" element={<Vision />} />
           <Route path="/user/home" element={<UserHome />} />
           <Route path="/admin/home" element={<AdminHome />} />
+          <Route path="/user/sessions" element={<ViewMySessions />} />
+          <Route path="/user/feedback" element={<Feedback />} />
+          <Route path="/user/guide" element={<FacilityGuide />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
