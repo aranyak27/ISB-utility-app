@@ -77,7 +77,7 @@ const Index = () => {
         {/* Footer */}
         <div className="mt-8 text-center">
           <p className="text-xs text-muted-foreground">
-            Secure access to ISB recreation facilities
+            Secure access to ISB facilities
           </p>
         </div>
       </div>
