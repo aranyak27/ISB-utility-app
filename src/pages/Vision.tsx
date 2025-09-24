@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PhaseCard } from "@/components/PhaseCard";
 import { FeatureModal } from "@/components/FeatureModal";
 import { visionData, FeatureSection } from "@/data/visionData";
-import { ArrowRight, BookOpen, Target } from "lucide-react";
+import { ArrowRight, BookOpen, Target, ArrowLeft } from "lucide-react";
 
 const Vision = () => {
   const navigate = useNavigate();
@@ -40,6 +40,19 @@ const Vision = () => {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Back Button */}
+        <div className="flex items-center mb-6">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="mr-4"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </Button>
+        </div>
+        
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">

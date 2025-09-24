@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { QrCode, Users, Clock, MapPin } from "lucide-react";
+import { QrCode, Users, Clock, MapPin, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const UserHome = () => {
+  const navigate = useNavigate();
+  
   // Mock facility data
   const facilities = [
     {
@@ -42,6 +45,18 @@ const UserHome = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-background">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
+        <div className="flex items-center mb-6">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="mr-4"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </Button>
+        </div>
+        
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">Welcome to OneISB</h1>
           <p className="text-muted-foreground">Scan QR codes to check in/out of facilities</p>
@@ -81,7 +96,7 @@ const UserHome = () => {
                 
                 <Button 
                   className="w-full" 
-                  disabled={facility.status === 'Full' || facility.status === 'Closed'}
+                  disabled={facility.status === 'Closed'}
                   variant={facility.status === 'Open' ? 'default' : 'secondary'}
                 >
                   <QrCode className="mr-2 h-4 w-4" />

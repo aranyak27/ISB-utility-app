@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BarChart3, Settings, Users, QrCode, FileText, Activity } from "lucide-react";
+import { BarChart3, Settings, Users, QrCode, FileText, Activity, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const AdminHome = () => {
+  const navigate = useNavigate();
+  
   const stats = [
     { label: "Active Sessions", value: "23", icon: Activity, color: "text-primary" },
     { label: "Total Facilities", value: "8", icon: Settings, color: "text-success" },
@@ -21,6 +24,19 @@ const AdminHome = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-background">
       <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Back Button */}
+        <div className="flex items-center mb-6">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="mr-4"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </Button>
+        </div>
+        
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
           <div>
