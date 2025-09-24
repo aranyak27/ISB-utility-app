@@ -4,18 +4,57 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Mail, Phone } from "lucide-react";
+import { ArrowLeft, Mail, Phone, AlertCircle, CheckCircle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+
+  // Email validation
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) return "";
+    if (!emailRegex.test(email)) return "Please enter a valid email address";
+    return "";
+  };
+
+  // Phone validation (supports various formats)
+  const validatePhone = (phone: string) => {
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+    if (!phone) return "";
+    if (phone.length < 8) return "Phone number too short";
+    if (phone.length > 15) return "Phone number too long";
+    if (!phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''))) {
+      return "Please enter a valid phone number";
+    }
+    return "";
+  };
+
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+    setEmailError(validateEmail(value));
+  };
+
+  const handlePhoneChange = (value: string) => {
+    // Allow only numbers, spaces, hyphens, parentheses, and plus sign
+    const cleaned = value.replace(/[^\d\s\-\(\)\+]/g, '');
+    setPhone(cleaned);
+    setPhoneError(validatePhone(cleaned));
+  };
 
   const handleEmailReset = (e: React.FormEvent) => {
     e.preventDefault();
+    const emailValidationError = validateEmail(email);
     if (!email) {
-      alert("Please enter your email address");
+      setEmailError("Please enter your email address");
+      return;
+    }
+    if (emailValidationError) {
+      setEmailError(emailValidationError);
       return;
     }
     alert("Password reset link sent to your email! (Demo)");
@@ -24,8 +63,13 @@ const ForgotPassword = () => {
 
   const handlePhoneReset = (e: React.FormEvent) => {
     e.preventDefault();
+    const phoneValidationError = validatePhone(phone);
     if (!phone) {
-      alert("Please enter your phone number");
+      setPhoneError("Please enter your phone number");
+      return;
+    }
+    if (phoneValidationError) {
+      setPhoneError(phoneValidationError);
       return;
     }
     // Navigate to OTP verification page
@@ -71,19 +115,39 @@ const ForgotPassword = () => {
                     <Label htmlFor="email" className="text-foreground">
                       Email Address
                     </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="Enter your email address"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="bg-background/50"
-                    />
+                    <div className="relative">
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="Enter your email address"
+                        value={email}
+                        onChange={(e) => handleEmailChange(e.target.value)}
+                        className={`bg-background/50 pr-10 ${
+                          emailError ? 'border-destructive' : email && !emailError ? 'border-success' : ''
+                        }`}
+                      />
+                      {email && (
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                          {emailError ? (
+                            <AlertCircle className="h-4 w-4 text-destructive" />
+                          ) : (
+                            <CheckCircle className="h-4 w-4 text-success" />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    {emailError && (
+                      <p className="text-sm text-destructive flex items-center gap-1">
+                        <AlertCircle className="h-3 w-3" />
+                        {emailError}
+                      </p>
+                    )}
                   </div>
                   
                   <Button 
                     type="submit" 
                     className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground font-medium"
+                    disabled={!!emailError || !email}
                   >
                     <Mail className="mr-2 h-4 w-4" />
                     Send Reset Link
@@ -97,19 +161,42 @@ const ForgotPassword = () => {
                     <Label htmlFor="phone" className="text-foreground">
                       Phone Number
                     </Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="Enter your phone number"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="bg-background/50"
-                    />
+                    <div className="relative">
+                      <Input
+                        id="phone"
+                        type="tel"
+                        placeholder="Enter your phone number"
+                        value={phone}
+                        onChange={(e) => handlePhoneChange(e.target.value)}
+                        className={`bg-background/50 pr-10 ${
+                          phoneError ? 'border-destructive' : phone && !phoneError ? 'border-success' : ''
+                        }`}
+                      />
+                      {phone && (
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                          {phoneError ? (
+                            <AlertCircle className="h-4 w-4 text-destructive" />
+                          ) : (
+                            <CheckCircle className="h-4 w-4 text-success" />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    {phoneError && (
+                      <p className="text-sm text-destructive flex items-center gap-1">
+                        <AlertCircle className="h-3 w-3" />
+                        {phoneError}
+                      </p>
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                      Format: +1234567890 or 1234567890
+                    </p>
                   </div>
                   
                   <Button 
                     type="submit" 
                     className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground font-medium"
+                    disabled={!!phoneError || !phone}
                   >
                     <Phone className="mr-2 h-4 w-4" />
                     Send OTP
