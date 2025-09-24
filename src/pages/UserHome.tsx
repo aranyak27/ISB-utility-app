@@ -40,6 +40,23 @@ const UserHome = () => {
     { value: "chess", label: "Chess" }
   ];
 
+  // Sport-specific occupancy data
+  const sportOccupancy = {
+    badminton: { current: 6, max: 12 },
+    squash: { current: 4, max: 8 },
+    swimming: { current: 15, max: 25 },
+    chess: { current: 3, max: 10 }
+  };
+
+  // Get occupancy based on selected sport for Recreation Center
+  const getOccupancyForFacility = (facility: any) => {
+    if (facility.name === "Recreation Center A" && selectedSports[facility.id]) {
+      const sport = selectedSports[facility.id];
+      return sportOccupancy[sport as keyof typeof sportOccupancy] || facility.occupancy;
+    }
+    return facility.occupancy;
+  };
+
   // Handle QR scanning
   const handleScanToEnter = (facilityId: number, facilityName: string) => {
     // Check if it's Recreation Center and sport is selected
@@ -117,14 +134,17 @@ const UserHome = () => {
               </CardHeader>
               
               <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Users className="h-4 w-4 text-primary" />
-                    <span className="text-foreground">
-                      {facility.occupancy.current}/{facility.occupancy.max}
-                    </span>
-                    <span className="text-muted-foreground">people</span>
-                  </div>
+                 <div className="flex items-center justify-between">
+                   <div className="flex items-center gap-2 text-sm">
+                     <Users className="h-4 w-4 text-primary" />
+                     <span className="text-foreground">
+                       {(() => {
+                         const occupancy = getOccupancyForFacility(facility);
+                         return `${occupancy.current}/${occupancy.max}`;
+                       })()}
+                     </span>
+                     <span className="text-muted-foreground">people</span>
+                   </div>
                   {!["Recreation Center A", "Gym & Fitness"].includes(facility.name) && (
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Clock className="h-3 w-3" />
@@ -139,10 +159,10 @@ const UserHome = () => {
                     <label className="text-sm font-medium text-foreground">
                       Select Sport <span className="text-destructive">*</span>
                     </label>
-                    <Select 
-                      value={selectedSports[facility.id] || ""} 
-                      onValueChange={(value) => setSelectedSports(prev => ({ ...prev, [facility.id]: value }))}
-                    >
+                     <Select 
+                       value={selectedSports[facility.id] || ""} 
+                       onValueChange={(value) => setSelectedSports(prev => ({ ...prev, [facility.id]: value }))}
+                     >
                       <SelectTrigger className="w-full bg-background border-border">
                         <SelectValue placeholder="Choose a sport" />
                       </SelectTrigger>
