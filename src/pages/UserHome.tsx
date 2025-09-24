@@ -9,30 +9,7 @@ import { useNavigate } from "react-router-dom";
 const UserHome = () => {
   const navigate = useNavigate();
   const [selectedSports, setSelectedSports] = useState<{ [key: number]: string }>({});
-
-  const sports = [
-    { value: "badminton", label: "Badminton" },
-    { value: "squash", label: "Squash" },
-    { value: "swimming", label: "Swimming" },
-    { value: "chess", label: "Chess" }
-  ];
-
-  // Handle QR scanning
-  const handleScanToEnter = (facilityId: number, facilityName: string) => {
-    // Check if it's Recreation Center and sport is selected
-    if (facilityName === "Recreation Center A" && !selectedSports[facilityId]) {
-      alert("Please select a sport before scanning to enter Recreation Center.");
-      return;
-    }
-    
-    // In a real app, this would trigger camera/QR scanner
-    // For demo, we'll simulate the scanning process
-    const sportInfo = selectedSports[facilityId] ? ` for ${sports.find(s => s.value === selectedSports[facilityId])?.label}` : '';
-    alert(`QR Scanner opened for ${facilityName}${sportInfo}. In a real app, this would open the camera to scan QR codes.`);
-  };
-  
-  // Mock facility data
-  const facilities = [
+  const [facilities, setFacilities] = useState([
     {
       id: 1,
       name: "Recreation Center A",
@@ -54,8 +31,44 @@ const UserHome = () => {
       occupancy: { current: 12, max: 30 },
       location: "Block C, Second Floor"
     }
+  ]);
+
+  const sports = [
+    { value: "badminton", label: "Badminton" },
+    { value: "squash", label: "Squash" },
+    { value: "swimming", label: "Swimming" },
+    { value: "chess", label: "Chess" }
   ];
 
+  // Handle QR scanning
+  const handleScanToEnter = (facilityId: number, facilityName: string) => {
+    // Check if it's Recreation Center and sport is selected
+    if (facilityName === "Recreation Center A" && !selectedSports[facilityId]) {
+      alert("Please select a sport before scanning to enter Recreation Center.");
+      return;
+    }
+    
+    // Simulate QR scanning process
+    const sportInfo = selectedSports[facilityId] ? ` for ${sports.find(s => s.value === selectedSports[facilityId])?.label}` : '';
+    
+    // Update occupancy count
+    setFacilities(prev => prev.map(facility => {
+      if (facility.id === facilityId) {
+        const newCurrent = facility.occupancy.current + 1;
+        const newStatus = newCurrent >= facility.occupancy.max ? "Full" : "Open";
+        return {
+          ...facility,
+          occupancy: { ...facility.occupancy, current: newCurrent },
+          status: newStatus
+        };
+      }
+      return facility;
+    }));
+    
+    // Show success message
+    alert(`✅ Successfully checked in to ${facilityName}${sportInfo}!\n\nOccupancy updated. Enjoy your session!`);
+  };
+  
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Open': return 'bg-success text-success-foreground';
