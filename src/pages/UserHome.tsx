@@ -6,6 +6,13 @@ import { useNavigate } from "react-router-dom";
 
 const UserHome = () => {
   const navigate = useNavigate();
+
+  // Handle QR scanning
+  const handleScanToEnter = (facilityName: string) => {
+    // In a real app, this would trigger camera/QR scanner
+    // For demo, we'll simulate the scanning process
+    alert(`QR Scanner opened for ${facilityName}. In a real app, this would open the camera to scan QR codes.`);
+  };
   
   // Mock facility data
   const facilities = [
@@ -98,6 +105,7 @@ const UserHome = () => {
                   className="w-full" 
                   disabled={facility.status === 'Closed'}
                   variant="default"
+                  onClick={() => handleScanToEnter(facility.name)}
                 >
                   <QrCode className="mr-2 h-4 w-4" />
                   Scan to Enter
