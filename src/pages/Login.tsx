@@ -105,6 +105,17 @@ const Login = () => {
                 <LogIn className="mr-2 h-4 w-4" />
                 Sign In
               </Button>
+              
+              <div className="text-center">
+                <Button
+                  variant="link"
+                  size="sm"
+                  onClick={() => navigate("/forgot-password")}
+                  className="text-primary hover:text-primary/80"
+                >
+                  Forgot Password?
+                </Button>
+              </div>
             </form>
             
             <div className="mt-6 pt-4 border-t border-border">
