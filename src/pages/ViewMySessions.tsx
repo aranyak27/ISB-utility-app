@@ -30,16 +30,6 @@ const ViewMySessions = () => {
       location: "Block B, First Floor"
     },
     {
-      id: 3,
-      facility: "Recreation Center A",
-      sport: "Swimming",
-      date: "2024-09-25",
-      time: "16:00 - 17:00",
-      duration: "1h",
-      status: "Upcoming",
-      location: "Block A, Ground Floor"
-    },
-    {
       id: 4,
       facility: "LRC",
       sport: "Study",
@@ -54,7 +44,6 @@ const ViewMySessions = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Completed': return 'bg-success text-success-foreground';
-      case 'Upcoming': return 'bg-primary text-primary-foreground';
       case 'Cancelled': return 'bg-destructive text-destructive-foreground';
       default: return 'bg-muted text-muted-foreground';
     }
@@ -106,7 +95,7 @@ const ViewMySessions = () => {
                 <Clock className="h-5 w-5 text-primary" />
                 <div>
                   <p className="text-sm text-muted-foreground">Total Hours</p>
-                  <p className="text-2xl font-bold text-foreground">5.5h</p>
+                  <p className="text-2xl font-bold text-foreground">4.5h</p>
                 </div>
               </div>
             </CardContent>
@@ -117,8 +106,8 @@ const ViewMySessions = () => {
               <div className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-primary" />
                 <div>
-                  <p className="text-sm text-muted-foreground">Upcoming</p>
-                  <p className="text-2xl font-bold text-foreground">1</p>
+                  <p className="text-sm text-muted-foreground">This Week</p>
+                  <p className="text-2xl font-bold text-foreground">2</p>
                 </div>
               </div>
             </CardContent>
