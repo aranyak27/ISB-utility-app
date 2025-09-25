@@ -205,12 +205,12 @@ const FacilityGuide = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-foreground mb-2">Booking & Reservations</h4>
+                  <h4 className="font-semibold text-foreground mb-2">Access & Usage</h4>
                   <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Bookings can be made up to 7 days in advance</li>
-                    <li>• Cancellations must be made at least 2 hours before the session</li>
-                    <li>• No-shows will result in booking privileges suspension</li>
-                    <li>• Maximum 2 active bookings per user</li>
+                    <li>• Access facilities during operating hours</li>
+                    <li>• Check availability before visiting</li>
+                    <li>• Follow facility-specific rules and guidelines</li>
+                    <li>• Report any maintenance issues immediately</li>
                   </ul>
                 </div>
                 
