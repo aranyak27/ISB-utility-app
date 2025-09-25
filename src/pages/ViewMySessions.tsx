@@ -17,11 +17,11 @@ const ViewMySessions = () => {
       sport: "Badminton",
       date: "2024-09-25",
       time: "14:00 - 15:30",
-      duration: "1h 30m",
-      status: "In Progress",
-      location: "Block A, Ground Floor",
       startTime: "14:00",
-      autoLogoutTime: "15:30"
+      autoLogoutTime: "15:30",
+      duration: "1h 30m",
+      status: "Auto Closed",
+      location: "Block A, Ground Floor"
     },
     {
       id: 2,
@@ -29,44 +29,59 @@ const ViewMySessions = () => {
       sport: "Gym",
       date: "2024-09-25",
       time: "09:00 - 10:30",
-      duration: "1h 30m",
-      status: "In Progress",
-      location: "Block B, First Floor",
       startTime: "09:00",
-      autoLogoutTime: "10:30"
+      autoLogoutTime: "10:30",
+      duration: "1h 30m",
+      status: "Auto Closed",
+      location: "Block B, First Floor"
     },
     {
       id: 3,
-      facility: "Recreation Center A",
-      sport: "Badminton",
-      date: "2024-09-24",
-      time: "14:00 - 15:30",
+      facility: "LRC",
+      sport: "Study",
+      date: "2024-09-25",
+      time: "11:00 - 12:30",
+      startTime: "11:00",
+      autoLogoutTime: "12:30",
       duration: "1h 30m",
-      status: "Completed",
-      location: "Block A, Ground Floor",
-      endReason: "Auto logout (1.5h limit)"
+      status: "In Progress",
+      location: "Block C, Second Floor"
     },
     {
       id: 4,
-      facility: "Gym & Fitness",
-      sport: "Gym",
-      date: "2024-09-23",
-      time: "09:00 - 10:30",
-      duration: "1h 30m",
+      facility: "Recreation Center B",
+      sport: "Table Tennis",
+      date: "2024-09-24",
+      time: "16:00 - 17:00",
+      startTime: "16:00",
+      autoLogoutTime: "17:30",
+      duration: "1h",
       status: "Completed",
-      location: "Block B, First Floor",
-      endReason: "Manual checkout"
+      location: "Block A, First Floor"
     },
     {
       id: 5,
+      facility: "Gym & Fitness",
+      sport: "Gym",
+      date: "2024-09-23",
+      time: "08:00 - 09:30",
+      startTime: "08:00",
+      autoLogoutTime: "09:30",
+      duration: "1h 30m",
+      status: "Auto Closed",
+      location: "Block B, First Floor"
+    },
+    {
+      id: 6,
       facility: "LRC",
       sport: "Study",
       date: "2024-09-22",
-      time: "10:00 - 11:30",
-      duration: "1h 30m",
+      time: "10:00 - 11:15",
+      startTime: "10:00",
+      autoLogoutTime: "11:30",
+      duration: "1h 15m",
       status: "Completed",
-      location: "Block C, Second Floor",
-      endReason: "Auto logout (1.5h limit)"
+      location: "Block C, Second Floor"
     }
   ]);
 
@@ -164,6 +179,7 @@ const ViewMySessions = () => {
     switch (status) {
       case 'In Progress': return 'bg-primary text-primary-foreground';
       case 'Completed': return 'bg-success text-success-foreground';
+      case 'Auto Closed': return 'bg-orange-500 text-white';
       case 'Cancelled': return 'bg-destructive text-destructive-foreground';
       default: return 'bg-muted text-muted-foreground';
     }
@@ -528,9 +544,9 @@ const ViewMySessions = () => {
                               </div>
                             </div>
                             
-                            {session.autoLogoutTime && (
+                            {session.status === 'In Progress' && session.autoLogoutTime && (
                               <div className="text-xs text-amber-600 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded">
-                                ⏰ Auto logout at {session.autoLogoutTime} (1.5h limit)
+                                ⏰ Auto logout at {session.autoLogoutTime} (1.5h from start)
                               </div>
                             )}
                           </div>
@@ -538,6 +554,65 @@ const ViewMySessions = () => {
                           <div className="text-right">
                             <p className="text-sm text-muted-foreground">Max Duration</p>
                             <p className="font-semibold text-foreground">1h 30m</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Auto Closed Sessions */}
+          {sessions.filter(session => session.status === 'Auto Closed').length > 0 && (
+            <Card className="bg-gradient-to-br from-card to-secondary/30 border-border">
+              <CardHeader>
+                <CardTitle className="text-foreground flex items-center gap-2">
+                  <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                  Auto Closed Sessions
+                </CardTitle>
+                <p className="text-muted-foreground text-sm">Sessions automatically ended after 1.5 hours</p>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {sessions.filter(session => session.status === 'Auto Closed').map((session) => (
+                    <Card key={session.id} className="bg-gradient-to-br from-background to-secondary/30 border-border border-orange-200">
+                      <CardContent className="p-6">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h3 className="text-lg font-semibold text-foreground">{session.facility}</h3>
+                              <Badge className={getStatusColor(session.status)}>
+                                {session.status}
+                              </Badge>
+                            </div>
+                            
+                            <p className="text-primary font-medium mb-2">{session.sport}</p>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-muted-foreground mb-2">
+                              <div className="flex items-center gap-1">
+                                <Calendar className="h-3 w-3" />
+                                {formatDate(session.date)}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                Started: {session.startTime}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <MapPin className="h-3 w-3" />
+                                {session.location}
+                              </div>
+                            </div>
+                            
+                            <div className="text-xs text-orange-600 bg-orange-50 dark:bg-orange-900/20 px-2 py-1 rounded">
+                              🔒 Auto closed at {session.autoLogoutTime} (1.5h limit reached)
+                            </div>
+                          </div>
+                          
+                          <div className="text-right">
+                            <p className="text-sm text-muted-foreground">Duration</p>
+                            <p className="font-semibold text-foreground">{session.duration}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -556,6 +631,7 @@ const ViewMySessions = () => {
                   <div className="w-3 h-3 bg-success rounded-full"></div>
                   Completed Sessions
                 </CardTitle>
+                <p className="text-muted-foreground text-sm">Sessions manually ended before 1.5 hour limit</p>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -588,11 +664,9 @@ const ViewMySessions = () => {
                               </div>
                             </div>
                             
-                            {session.endReason && (
-                              <div className="text-xs text-muted-foreground bg-muted/30 px-2 py-1 rounded">
-                                {session.endReason}
-                              </div>
-                            )}
+                            <div className="text-xs text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded">
+                              ✓ Manually checked out (before {session.autoLogoutTime} auto-logout)
+                            </div>
                           </div>
                           
                           <div className="text-right">
