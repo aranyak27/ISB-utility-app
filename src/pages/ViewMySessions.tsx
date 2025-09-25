@@ -157,11 +157,11 @@ const ViewMySessions = () => {
     },
     {
       id: 4,
-      title: "Consistency King",
-      description: "10 days streak (7/10)",
+      title: "Facility Explorer",
+      description: "Visit all available facilities (3/5)",
       icon: Crown,
       earned: false,
-      progress: 70,
+      progress: 60,
       rarity: "Platinum"
     }
   ]);
@@ -274,7 +274,7 @@ const ViewMySessions = () => {
                   <div className="flex items-center gap-2">
                     <Calendar className="h-5 w-5 text-primary" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Total Sessions</p>
+                      <p className="text-sm text-muted-foreground">Facilities Used</p>
                       <p className="text-2xl font-bold text-foreground">{sessions.length}</p>
                     </div>
                   </div>
@@ -298,8 +298,8 @@ const ViewMySessions = () => {
                   <div className="flex items-center gap-2">
                     <Users className="h-5 w-5 text-primary" />
                     <div>
-                      <p className="text-sm text-muted-foreground">This Week</p>
-                      <p className="text-2xl font-bold text-foreground">2</p>
+                      <p className="text-sm text-muted-foreground">This Month</p>
+                      <p className="text-2xl font-bold text-foreground">12</p>
                     </div>
                   </div>
                 </CardContent>
