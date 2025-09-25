@@ -15,6 +15,28 @@ const ViewMySessions = () => {
       id: 1,
       facility: "Recreation Center A",
       sport: "Badminton",
+      date: "2024-09-25",
+      time: "14:00 - 15:30",
+      duration: "1h 30m",
+      status: "In Progress",
+      location: "Block A, Ground Floor",
+      startTime: "14:00"
+    },
+    {
+      id: 2,
+      facility: "Gym & Fitness",
+      sport: "Gym",
+      date: "2024-09-25",
+      time: "09:00 - 10:00",
+      duration: "1h",
+      status: "In Progress",
+      location: "Block B, First Floor",
+      startTime: "09:00"
+    },
+    {
+      id: 3,
+      facility: "Recreation Center A",
+      sport: "Badminton",
       date: "2024-09-24",
       time: "14:00 - 15:30",
       duration: "1h 30m",
@@ -22,7 +44,7 @@ const ViewMySessions = () => {
       location: "Block A, Ground Floor"
     },
     {
-      id: 2,
+      id: 4,
       facility: "Gym & Fitness",
       sport: "Gym",
       date: "2024-09-23",
@@ -32,7 +54,7 @@ const ViewMySessions = () => {
       location: "Block B, First Floor"
     },
     {
-      id: 4,
+      id: 5,
       facility: "LRC",
       sport: "Study",
       date: "2024-09-22",
@@ -135,6 +157,7 @@ const ViewMySessions = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
+      case 'In Progress': return 'bg-primary text-primary-foreground';
       case 'Completed': return 'bg-success text-success-foreground';
       case 'Cancelled': return 'bg-destructive text-destructive-foreground';
       default: return 'bg-muted text-muted-foreground';
@@ -274,30 +297,6 @@ const ViewMySessions = () => {
               </Card>
             </div>
 
-            {/* Recent Sessions */}
-            <Card className="bg-gradient-to-br from-card to-secondary/30 border-border">
-              <CardHeader>
-                <CardTitle className="text-foreground">Recent Sessions</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {sessions.slice(0, 3).map((session) => (
-                    <div key={session.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 bg-primary rounded-full"></div>
-                        <div>
-                          <p className="font-medium text-foreground">{session.facility}</p>
-                          <p className="text-sm text-muted-foreground">{session.sport} • {formatDate(session.date)}</p>
-                        </div>
-                      </div>
-                      <Badge className={getStatusColor(session.status)}>
-                        {session.status}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
           </TabsContent>
           
           <TabsContent value="analytics" className="space-y-6 mt-6">
@@ -482,67 +481,129 @@ const ViewMySessions = () => {
           </TabsContent>
         </Tabs>
 
-        {/* Sessions List - moved to bottom */}
-        <Card className="bg-gradient-to-br from-card to-secondary/30 border-border mt-8">
-          <CardHeader>
-            <CardTitle className="text-foreground">All Sessions</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {sessions.map((session) => (
-                <Card key={session.id} className="bg-gradient-to-br from-background to-secondary/30 border-border">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-semibold text-foreground">{session.facility}</h3>
-                          <Badge className={getStatusColor(session.status)}>
-                            {session.status}
-                          </Badge>
+        {/* Sessions by Status */}
+        <div className="space-y-8 mt-8">
+          {/* In Progress Sessions */}
+          {sessions.filter(session => session.status === 'In Progress').length > 0 && (
+            <Card className="bg-gradient-to-br from-card to-secondary/30 border-border">
+              <CardHeader>
+                <CardTitle className="text-foreground flex items-center gap-2">
+                  <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+                  In Progress Sessions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {sessions.filter(session => session.status === 'In Progress').map((session) => (
+                    <Card key={session.id} className="bg-gradient-to-br from-background to-secondary/30 border-border border-primary/30">
+                      <CardContent className="p-6">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h3 className="text-lg font-semibold text-foreground">{session.facility}</h3>
+                              <Badge className={getStatusColor(session.status)}>
+                                {session.status}
+                              </Badge>
+                            </div>
+                            
+                            <p className="text-primary font-medium mb-2">{session.sport}</p>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-muted-foreground">
+                              <div className="flex items-center gap-1">
+                                <Calendar className="h-3 w-3" />
+                                {formatDate(session.date)}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {session.time}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <MapPin className="h-3 w-3" />
+                                {session.location}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="text-right">
+                            <p className="text-sm text-muted-foreground">Duration</p>
+                            <p className="font-semibold text-foreground">{session.duration}</p>
+                          </div>
                         </div>
-                        
-                        <p className="text-primary font-medium mb-2">{session.sport}</p>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
-                            {formatDate(session.date)}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            {session.time}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <MapPin className="h-3 w-3" />
-                            {session.location}
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="text-right">
-                        <p className="text-sm text-muted-foreground">Duration</p>
-                        <p className="font-semibold text-foreground">{session.duration}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-        {/* Empty State */}
-        {sessions.length === 0 && (
-          <Card className="bg-gradient-to-br from-card to-secondary/30 border-border">
-            <CardContent className="p-12 text-center">
-              <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">No Sessions Yet</h3>
-              <p className="text-muted-foreground">
-                Start using facilities to see your session history here.
-              </p>
-            </CardContent>
-          </Card>
-        )}
+          {/* Completed Sessions */}
+          {sessions.filter(session => session.status === 'Completed').length > 0 && (
+            <Card className="bg-gradient-to-br from-card to-secondary/30 border-border">
+              <CardHeader>
+                <CardTitle className="text-foreground flex items-center gap-2">
+                  <div className="w-3 h-3 bg-success rounded-full"></div>
+                  Completed Sessions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {sessions.filter(session => session.status === 'Completed').map((session) => (
+                    <Card key={session.id} className="bg-gradient-to-br from-background to-secondary/30 border-border">
+                      <CardContent className="p-6">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h3 className="text-lg font-semibold text-foreground">{session.facility}</h3>
+                              <Badge className={getStatusColor(session.status)}>
+                                {session.status}
+                              </Badge>
+                            </div>
+                            
+                            <p className="text-primary font-medium mb-2">{session.sport}</p>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-muted-foreground">
+                              <div className="flex items-center gap-1">
+                                <Calendar className="h-3 w-3" />
+                                {formatDate(session.date)}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {session.time}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <MapPin className="h-3 w-3" />
+                                {session.location}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="text-right">
+                            <p className="text-sm text-muted-foreground">Duration</p>
+                            <p className="font-semibold text-foreground">{session.duration}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Empty State */}
+          {sessions.length === 0 && (
+            <Card className="bg-gradient-to-br from-card to-secondary/30 border-border">
+              <CardContent className="p-12 text-center">
+                <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">No Sessions Yet</h3>
+                <p className="text-muted-foreground">
+                  Start using facilities to see your session history here.
+                </p>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </div>
     </div>
   );
