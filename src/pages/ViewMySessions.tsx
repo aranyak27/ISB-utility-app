@@ -167,12 +167,12 @@ const ViewMySessions = () => {
   ]);
 
   const [leaderboard] = useState([
-    { rank: 1, name: "Alex Chen", points: 2150, sessions: 28 },
-    { rank: 2, name: "Sarah Kim", points: 1890, sessions: 24 },
-    { rank: 3, name: "Mike Jones", points: 1750, sessions: 22 },
-    { rank: 4, name: "Lisa Wang", points: 1620, sessions: 20 },
-    { rank: 5, name: "David Park", points: 1580, sessions: 19 },
-    { rank: 15, name: "You", points: 1250, sessions: 15, isCurrentUser: true }
+    { rank: 1, name: "Alex Chen", points: 2150 },
+    { rank: 2, name: "Sarah Kim", points: 1890 },
+    { rank: 3, name: "Mike Jones", points: 1750 },
+    { rank: 4, name: "Lisa Wang", points: 1620 },
+    { rank: 5, name: "David Park", points: 1580 },
+    { rank: 15, name: "You", points: 1250, isCurrentUser: true }
   ]);
 
   const getStatusColor = (status: string) => {
@@ -484,9 +484,6 @@ const ViewMySessions = () => {
                             user.isCurrentUser ? 'text-primary' : 'text-foreground'
                           }`}>
                             {user.name}
-                          </p>
-                          <p className="text-sm text-muted-foreground">
-                            {user.sessions} sessions
                           </p>
                         </div>
                       </div>
