@@ -32,7 +32,7 @@ export const visionData: Phase[] = [
       {
         title: 'Access Control',
         description: 'Seamless check-in/out system with automated session management',
-        items: ['QR check-in/out', 'Auto-end at max session length']
+        items: ['QR check-in/out', 'Auto logout in 1.5 hours']
       },
       {
         title: 'Admin Tools',
