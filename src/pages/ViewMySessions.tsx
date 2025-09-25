@@ -20,18 +20,20 @@ const ViewMySessions = () => {
       duration: "1h 30m",
       status: "In Progress",
       location: "Block A, Ground Floor",
-      startTime: "14:00"
+      startTime: "14:00",
+      autoLogoutTime: "15:30"
     },
     {
       id: 2,
       facility: "Gym & Fitness",
       sport: "Gym",
       date: "2024-09-25",
-      time: "09:00 - 10:00",
-      duration: "1h",
+      time: "09:00 - 10:30",
+      duration: "1h 30m",
       status: "In Progress",
       location: "Block B, First Floor",
-      startTime: "09:00"
+      startTime: "09:00",
+      autoLogoutTime: "10:30"
     },
     {
       id: 3,
@@ -41,27 +43,30 @@ const ViewMySessions = () => {
       time: "14:00 - 15:30",
       duration: "1h 30m",
       status: "Completed",
-      location: "Block A, Ground Floor"
+      location: "Block A, Ground Floor",
+      endReason: "Auto logout (1.5h limit)"
     },
     {
       id: 4,
       facility: "Gym & Fitness",
       sport: "Gym",
       date: "2024-09-23",
-      time: "09:00 - 10:00",
-      duration: "1h",
+      time: "09:00 - 10:30",
+      duration: "1h 30m",
       status: "Completed",
-      location: "Block B, First Floor"
+      location: "Block B, First Floor",
+      endReason: "Manual checkout"
     },
     {
       id: 5,
       facility: "LRC",
       sport: "Study",
       date: "2024-09-22",
-      time: "10:00 - 12:00",
-      duration: "2h",
+      time: "10:00 - 11:30",
+      duration: "1h 30m",
       status: "Completed",
-      location: "Block C, Second Floor"
+      location: "Block C, Second Floor",
+      endReason: "Auto logout (1.5h limit)"
     }
   ]);
 
@@ -266,7 +271,7 @@ const ViewMySessions = () => {
                     <Clock className="h-5 w-5 text-primary" />
                     <div>
                       <p className="text-sm text-muted-foreground">Total Hours</p>
-                      <p className="text-2xl font-bold text-foreground">4.5h</p>
+                      <p className="text-2xl font-bold text-foreground">7.5h</p>
                     </div>
                   </div>
                 </CardContent>
@@ -508,7 +513,7 @@ const ViewMySessions = () => {
                             
                             <p className="text-primary font-medium mb-2">{session.sport}</p>
                             
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-muted-foreground">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-muted-foreground mb-2">
                               <div className="flex items-center gap-1">
                                 <Calendar className="h-3 w-3" />
                                 {formatDate(session.date)}
@@ -522,11 +527,17 @@ const ViewMySessions = () => {
                                 {session.location}
                               </div>
                             </div>
+                            
+                            {session.autoLogoutTime && (
+                              <div className="text-xs text-amber-600 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded">
+                                ⏰ Auto logout at {session.autoLogoutTime} (1.5h limit)
+                              </div>
+                            )}
                           </div>
                           
                           <div className="text-right">
-                            <p className="text-sm text-muted-foreground">Duration</p>
-                            <p className="font-semibold text-foreground">{session.duration}</p>
+                            <p className="text-sm text-muted-foreground">Max Duration</p>
+                            <p className="font-semibold text-foreground">1h 30m</p>
                           </div>
                         </div>
                       </CardContent>
@@ -562,7 +573,7 @@ const ViewMySessions = () => {
                             
                             <p className="text-primary font-medium mb-2">{session.sport}</p>
                             
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-muted-foreground">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-muted-foreground mb-2">
                               <div className="flex items-center gap-1">
                                 <Calendar className="h-3 w-3" />
                                 {formatDate(session.date)}
@@ -576,6 +587,12 @@ const ViewMySessions = () => {
                                 {session.location}
                               </div>
                             </div>
+                            
+                            {session.endReason && (
+                              <div className="text-xs text-muted-foreground bg-muted/30 px-2 py-1 rounded">
+                                {session.endReason}
+                              </div>
+                            )}
                           </div>
                           
                           <div className="text-right">
