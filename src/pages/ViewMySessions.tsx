@@ -40,10 +40,10 @@ const ViewMySessions = () => {
       facility: "LRC",
       sport: "Study",
       date: "2024-09-25",
-      time: "11:00 - 12:30",
+      time: "11:00 - 14:00",
       startTime: "11:00",
-      autoLogoutTime: "12:30",
-      duration: "1h 30m",
+      autoLogoutTime: "14:00",
+      duration: "3h",
       status: "In Progress",
       location: "Block C, Second Floor"
     },
@@ -76,10 +76,10 @@ const ViewMySessions = () => {
       facility: "LRC",
       sport: "Study",
       date: "2024-09-22",
-      time: "10:00 - 11:15",
+      time: "10:00 - 12:15",
       startTime: "10:00",
-      autoLogoutTime: "11:30",
-      duration: "1h 15m",
+      autoLogoutTime: "13:00",
+      duration: "2h 15m",
       status: "Completed",
       location: "Block C, Second Floor"
     }
@@ -546,7 +546,7 @@ const ViewMySessions = () => {
                             
                             {session.status === 'In Progress' && session.autoLogoutTime && (
                               <div className="text-xs text-amber-600 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded">
-                                ⏰ Auto logout at {session.autoLogoutTime} (1.5h from start)
+                                ⏰ Auto logout at {session.autoLogoutTime} ({session.facility === 'LRC' ? '3h from start' : '1.5h from start'})
                               </div>
                             )}
                           </div>
@@ -572,7 +572,7 @@ const ViewMySessions = () => {
                   <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
                   Auto Closed Sessions
                 </CardTitle>
-                <p className="text-muted-foreground text-sm">Sessions automatically ended after 1.5 hours</p>
+                <p className="text-muted-foreground text-sm">Sessions automatically ended after time limit (1.5h for most facilities, 3h for LRC)</p>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -606,7 +606,7 @@ const ViewMySessions = () => {
                             </div>
                             
                             <div className="text-xs text-orange-600 bg-orange-50 dark:bg-orange-900/20 px-2 py-1 rounded">
-                              🔒 Auto closed at {session.autoLogoutTime} (1.5h limit reached)
+                              🔒 Auto closed at {session.autoLogoutTime} ({session.facility === 'LRC' ? '3h limit' : '1.5h limit'} reached)
                             </div>
                           </div>
                           
@@ -631,7 +631,7 @@ const ViewMySessions = () => {
                   <div className="w-3 h-3 bg-success rounded-full"></div>
                   Completed Sessions
                 </CardTitle>
-                <p className="text-muted-foreground text-sm">Sessions manually ended before 1.5 hour limit</p>
+                <p className="text-muted-foreground text-sm">Sessions manually ended before time limit (1.5h for most facilities, 3h for LRC)</p>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
