@@ -1,16 +1,14 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FeatureSection } from "@/data/visionData";
-import { CheckCircle, Clock, ExternalLink } from "lucide-react";
+import { CheckCircle, Clock } from "lucide-react";
 
 interface PhaseCardProps {
   section: FeatureSection;
   phaseStatus: 'live' | 'coming_soon';
-  onLearnMore: (section: FeatureSection) => void;
 }
 
-export const PhaseCard = ({ section, phaseStatus, onLearnMore }: PhaseCardProps) => {
+export const PhaseCard = ({ section, phaseStatus }: PhaseCardProps) => {
   return (
     <Card className="h-full transition-all duration-200 hover:shadow-md border border-border bg-gradient-to-br from-card to-secondary/30">
       <CardHeader className="pb-3">
@@ -56,16 +54,6 @@ export const PhaseCard = ({ section, phaseStatus, onLearnMore }: PhaseCardProps)
           )}
         </ul>
         
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => onLearnMore(section)}
-          className="w-full justify-between text-primary hover:text-primary-foreground hover:bg-primary"
-          disabled={phaseStatus === 'coming_soon'}
-        >
-          <span>Learn more</span>
-          <ExternalLink className="h-3 w-3" />
-        </Button>
       </CardContent>
     </Card>
   );

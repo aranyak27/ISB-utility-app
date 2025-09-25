@@ -5,24 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PhaseCard } from "@/components/PhaseCard";
-import { FeatureModal } from "@/components/FeatureModal";
-import { visionData, FeatureSection } from "@/data/visionData";
-import { ArrowRight, BookOpen, Target, ArrowLeft } from "lucide-react";
+import { visionData } from "@/data/visionData";
+import { ArrowRight, Target, ArrowLeft } from "lucide-react";
 
 const Vision = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const persona = location.state?.persona || 'user';
-  const [selectedFeature, setSelectedFeature] = useState<FeatureSection | null>(null);
-  const [selectedPhase, setSelectedPhase] = useState<string>('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [dontShowAgain, setDontShowAgain] = useState(false);
-
-  const handleLearnMore = (feature: FeatureSection, phaseId: string) => {
-    setSelectedFeature(feature);
-    setSelectedPhase(phaseId);
-    setIsModalOpen(true);
-  };
 
   const handleContinueToApp = () => {
     if (dontShowAgain) {
@@ -35,8 +25,6 @@ const Vision = () => {
     const homePath = persona === 'admin' ? '/admin/home' : '/user/home';
     navigate(homePath);
   };
-
-  const currentPhase = visionData.find(p => p.id === selectedPhase);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-background">
@@ -109,7 +97,6 @@ const Vision = () => {
                     key={index}
                     section={section}
                     phaseStatus={phase.status}
-                    onLearnMore={(section) => handleLearnMore(section, phase.id)}
                   />
                 ))}
               </div>
@@ -147,14 +134,6 @@ const Vision = () => {
         </div>
       </div>
 
-      {/* Feature Modal */}
-      <FeatureModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        feature={selectedFeature}
-        phaseStatus={currentPhase?.status || 'coming_soon'}
-        phaseTitle={currentPhase?.title || ''}
-      />
     </div>
   );
 };
