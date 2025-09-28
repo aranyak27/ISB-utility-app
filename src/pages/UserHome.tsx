@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { QrCode, Users, Clock, MapPin, ArrowLeft } from "lucide-react";
+import { QrCode, Users, Clock, MapPin, ArrowLeft, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const UserHome = () => {
@@ -57,7 +57,7 @@ const UserHome = () => {
     return facility.occupancy;
   };
 
-  // Handle QR scanning
+  // Handle QR scanning to enter
   const handleScanToEnter = (facilityId: number, facilityName: string) => {
     // Check if it's Recreation Center and sport is selected
     if (facilityName === "Recreation Center A" && !selectedSports[facilityId]) {
@@ -84,6 +84,29 @@ const UserHome = () => {
     
     // Show success message
     alert(`✅ Successfully checked in to ${facilityName}${sportInfo}!\n\nOccupancy updated. Enjoy your session!`);
+  };
+
+  // Handle QR scanning to exit
+  const handleScanToExit = (facilityId: number, facilityName: string) => {
+    // Simulate QR scanning process
+    const sportInfo = selectedSports[facilityId] ? ` for ${sports.find(s => s.value === selectedSports[facilityId])?.label}` : '';
+    
+    // Update occupancy count (decrease by 1)
+    setFacilities(prev => prev.map(facility => {
+      if (facility.id === facilityId) {
+        const newCurrent = Math.max(0, facility.occupancy.current - 1);
+        const newStatus = newCurrent >= facility.occupancy.max ? "Full" : "Open";
+        return {
+          ...facility,
+          occupancy: { ...facility.occupancy, current: newCurrent },
+          status: newStatus
+        };
+      }
+      return facility;
+    }));
+    
+    // Show success message
+    alert(`✅ Successfully checked out of ${facilityName}${sportInfo}!\n\nOccupancy updated. Thanks for visiting!`);
   };
   
   const getStatusColor = (status: string) => {
@@ -181,15 +204,27 @@ const UserHome = () => {
                   </div>
                 )}
                 
-                <Button 
-                  className="w-full" 
-                  disabled={facility.status === 'Closed'}
-                  variant="default"
-                  onClick={() => handleScanToEnter(facility.id, facility.name)}
-                >
-                  <QrCode className="mr-2 h-4 w-4" />
-                  Scan to Enter
-                </Button>
+                <div className="space-y-2">
+                  <Button 
+                    className="w-full" 
+                    disabled={facility.status === 'Closed'}
+                    variant="default"
+                    onClick={() => handleScanToEnter(facility.id, facility.name)}
+                  >
+                    <QrCode className="mr-2 h-4 w-4" />
+                    Scan to Enter
+                  </Button>
+                  
+                  <Button 
+                    className="w-full" 
+                    disabled={facility.status === 'Closed'}
+                    variant="outline"
+                    onClick={() => handleScanToExit(facility.id, facility.name)}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Scan to Exit
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}
