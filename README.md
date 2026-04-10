@@ -1,6 +1,6 @@
 # Welcome to your Lovable project
 
-## Project info
+## Project info: https://oneisb.lovable.app
 
 **URL**: https://lovable.dev/projects/83494691-24d6-4f67-856e-3fd19b3728cf
 
